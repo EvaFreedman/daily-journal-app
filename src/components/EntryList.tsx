@@ -37,12 +37,19 @@ export default function EntryList({ entries }: Props) {
           <div className="flex flex-col gap-3">
             {dayEntries.map((entry) => (
               <div key={entry.id} className="rounded-lg border border-zinc-200 p-4">
-                <p className="text-xs text-zinc-400 mb-2">
-                  {new Date(entry.date).toLocaleTimeString("en-GB", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-zinc-400">
+                    {new Date(entry.date).toLocaleTimeString("en-GB", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                  {entry.mood && (
+                    <span className="text-xs bg-zinc-100 text-zinc-600 rounded-full px-2 py-0.5">
+                      {entry.mood}
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-zinc-700 whitespace-pre-wrap">{entry.text}</p>
               </div>
             ))}

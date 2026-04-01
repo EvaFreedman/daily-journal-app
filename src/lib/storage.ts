@@ -24,6 +24,11 @@ export function saveEntry(text: string): JournalEntry {
   return entry
 }
 
+export function updateEntry(id: string, changes: Partial<JournalEntry>): void {
+  const updated = getEntries().map((e) => (e.id === id ? { ...e, ...changes } : e))
+  localStorage.setItem(KEY, JSON.stringify(updated))
+}
+
 export function deleteEntry(id: string): void {
   const updated = getEntries().filter((e) => e.id !== id)
   localStorage.setItem(KEY, JSON.stringify(updated))

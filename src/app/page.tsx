@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import EntryForm from "@/components/EntryForm"
 import EntryList from "@/components/EntryList"
-import { getEntries, JournalEntry } from "@/lib/storage"
+import { getEntries, updateEntry, JournalEntry } from "@/lib/storage"
 
 export default function Home() {
   const [entries, setEntries] = useState<JournalEntry[]>([])
@@ -13,8 +13,22 @@ export default function Home() {
     setEntries(getEntries())
   }, [])
 
-  function handleSaved(entry: JournalEntry) {
+  async function handleSaved(entry: JournalEntry) {
     setEntries((prev) => [entry, ...prev])
+
+    // Ask our API route to tag the mood — this runs after the entry is already visible
+    const res = await fetch("/api/mood", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: entry.text }),
+    })
+    const { mood } = await res.json()
+
+    // Save mood to localStorage and update the displayed entry
+    updateEntry(entry.id, { mood })
+    setEntries((prev) =>
+      prev.map((e) => (e.id === entry.id ? { ...e, mood } : e))
+    )
   }
 
   const filtered = query.trim()
