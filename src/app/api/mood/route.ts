@@ -18,7 +18,9 @@ export async function POST(req: NextRequest) {
     messages: [
       {
         role: "user",
-        content: `Read this journal entry and reply with ONLY a single mood label and matching emoji (e.g. "Happy 😊" or "Reflective 🤔"). No punctuation, no explanation, just the label and emoji.\n\nEntry: ${text}`,
+        content: `Read this journal entry and reply with ONLY a single mood word in Title Case (e.g. "Reflective", "Anxious", "Melancholy"). No emojis, no punctuation, no explanation — just one word that best captures the emotional tone.
+
+Entry: ${text}`,
       },
     ],
   })

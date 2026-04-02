@@ -74,7 +74,7 @@ export default function EntryList({ entries }: Props) {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3 border-b border-zinc-100 pb-2">
             {day}
           </h2>
-          <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {dayEntries.map((entry) => (
               <EntryCard key={entry.id} entry={entry} />
             ))}
