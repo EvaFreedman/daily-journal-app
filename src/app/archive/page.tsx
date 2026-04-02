@@ -1,16 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import EntryList from "@/components/EntryList"
 import Calendar from "@/components/Calendar"
 import { getEntries, migrateMoods, JournalEntry } from "@/lib/storage"
 
-export default function Archive() {
+function ArchiveInner() {
+  const searchParams = useSearchParams()
+
   const [entries, setEntries] = useState<JournalEntry[]>([])
   const [query, setQuery] = useState("")
-  const [moodFilter, setMoodFilter] = useState<string | null>(null)
-  const [dateFilter, setDateFilter] = useState<string | null>(null)
-  const [minScore, setMinScore] = useState(1)
+  const [moodFilter, setMoodFilter] = useState<string | null>(searchParams.get("mood"))
+  const [dateFilter, setDateFilter] = useState<string | null>(searchParams.get("date"))
+  const [minScore, setMinScore] = useState(Number(searchParams.get("minScore") ?? 1))
+  const [exactScore, setExactScore] = useState<number | null>(searchParams.get("exactScore") ? Number(searchParams.get("exactScore")) : null)
 
   useEffect(() => {
     migrateMoods()
@@ -33,6 +37,7 @@ export default function Archive() {
     .filter((e) => !moodFilter || e.mood === moodFilter)
     .filter((e) => !dateFilter || e.date.slice(0, 10) === dateFilter)
     .filter((e) => e.moodScore === undefined || e.moodScore >= minScore)
+    .filter((e) => exactScore === null || e.moodScore === exactScore)
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -111,5 +116,13 @@ export default function Archive() {
 
       </div>
     </main>
+  )
+}
+
+export default function Archive() {
+  return (
+    <Suspense>
+      <ArchiveInner />
+    </Suspense>
   )
 }
