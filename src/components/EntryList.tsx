@@ -43,7 +43,7 @@ function EntryCard({ entry }: { entry: JournalEntry }) {
         <div className="flex items-center gap-2">
           {entry.mood && (
             <span className="text-xs bg-zinc-100 text-zinc-600 rounded-full px-2 py-0.5">
-              {entry.mood}
+              {entry.mood}{entry.moodScore !== undefined ? ` · ${entry.moodScore}/10` : ""}
             </span>
           )}
           {isLong && (

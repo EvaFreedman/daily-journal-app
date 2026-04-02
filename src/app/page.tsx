@@ -47,10 +47,14 @@ export default function Home() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: entry.text }),
     })
-    const { mood } = await res.json()
+    const data = await res.json()
 
-    updateEntry(entry.id, { mood })
-    setLastSaved(`Saved — ${mood}`)
+    if (res.ok) {
+      updateEntry(entry.id, { mood: data.mood, moodScore: data.score })
+      setLastSaved(`Saved — ${data.mood} (${data.score}/10)`)
+    } else {
+      setLastSaved("Saved — mood tagging failed")
+    }
   }
 
   const isToday = toYMD(entryDate) === toYMD(today)

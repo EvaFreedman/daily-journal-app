@@ -3,6 +3,7 @@ export type JournalEntry = {
   date: string
   text: string
   mood?: string
+  moodScore?: number
 }
 
 const KEY = "journal_entries"

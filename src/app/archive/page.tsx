@@ -10,6 +10,7 @@ export default function Archive() {
   const [query, setQuery] = useState("")
   const [moodFilter, setMoodFilter] = useState<string | null>(null)
   const [dateFilter, setDateFilter] = useState<string | null>(null)
+  const [minScore, setMinScore] = useState(1)
 
   useEffect(() => {
     migrateMoods()
@@ -17,6 +18,7 @@ export default function Archive() {
   }, [])
 
   const uniqueMoods = [...new Set(entries.map((e) => e.mood).filter(Boolean))] as string[]
+  const hasAnyScore = entries.some((e) => e.moodScore !== undefined)
 
   const daysWithEntries = new Set(
     entries.map((e) => e.date.slice(0, 10))
@@ -30,6 +32,7 @@ export default function Archive() {
     })
     .filter((e) => !moodFilter || e.mood === moodFilter)
     .filter((e) => !dateFilter || e.date.slice(0, 10) === dateFilter)
+    .filter((e) => e.moodScore === undefined || e.moodScore >= minScore)
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -69,6 +72,34 @@ export default function Archive() {
                   </button>
                 ))}
               </div>
+            </div>
+          )}
+          {hasAnyScore && (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-medium">Min score</p>
+                <span className="text-xs font-semibold text-zinc-700">{minScore}/10</span>
+              </div>
+              <input
+                type="range"
+                min={1}
+                max={10}
+                value={minScore}
+                onChange={(e) => setMinScore(Number(e.target.value))}
+                className="w-full accent-zinc-900"
+              />
+              <div className="flex justify-between text-[10px] text-zinc-400">
+                <span>Low</span>
+                <span>High</span>
+              </div>
+              {minScore > 1 && (
+                <button
+                  onClick={() => setMinScore(1)}
+                  className="text-[10px] text-zinc-400 hover:text-zinc-600 text-left"
+                >
+                  Clear score filter
+                </button>
+              )}
             </div>
           )}
         </aside>
