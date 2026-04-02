@@ -113,7 +113,8 @@ export default function Trends() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
-      <h1 className="text-2xl font-bold mb-10">Trends</h1>
+      <h1 className="text-2xl font-bold mb-2">Trends</h1>
+      <p className="text-xs text-zinc-400 mb-10">Hover a point to preview entries · click to open in archive</p>
 
       {/* Chart 1: Score over time */}
       <section className="mb-12">
@@ -155,9 +156,7 @@ export default function Trends() {
                 </p>
               ))}
             </div>
-          ) : (
-            <p className="text-xs text-zinc-300 px-1">Hover a point to preview entries · click to open in archive</p>
-          )}
+          ) : null}
         </div>
       </section>
 
