@@ -5,14 +5,15 @@ import { saveEntry, JournalEntry } from "@/lib/storage"
 
 type Props = {
   onSaved: (entry: JournalEntry) => void
+  date: Date
 }
 
-export default function EntryForm({ onSaved }: Props) {
+export default function EntryForm({ onSaved, date }: Props) {
   const [text, setText] = useState("")
 
   function handleSave() {
     if (!text.trim()) return
-    const entry = saveEntry(text.trim())
+    const entry = saveEntry(text.trim(), date)
     onSaved(entry)
     setText("")
   }
@@ -21,8 +22,8 @@ export default function EntryForm({ onSaved }: Props) {
     <div className="flex flex-col gap-3">
       <textarea
         className="w-full rounded-lg border border-zinc-200 p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-zinc-400"
-        rows={5}
-        placeholder="What's on your mind today?"
+        rows={16}
+        placeholder="What's on your mind?"
         value={text}
         onChange={(e) => setText(e.target.value)}
       />

@@ -13,10 +13,10 @@ export function getEntries(): JournalEntry[] {
   return raw ? JSON.parse(raw) : []
 }
 
-export function saveEntry(text: string): JournalEntry {
+export function saveEntry(text: string, date?: Date): JournalEntry {
   const entry: JournalEntry = {
     id: crypto.randomUUID(),
-    date: new Date().toISOString(),
+    date: (date ?? new Date()).toISOString(),
     text,
   }
   const entries = getEntries()

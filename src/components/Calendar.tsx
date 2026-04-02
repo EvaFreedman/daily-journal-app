@@ -6,15 +6,19 @@ type Props = {
   daysWithEntries: Set<string>   // set of "YYYY-MM-DD" strings
   selected: string | null        // "YYYY-MM-DD" or null
   onSelect: (day: string | null) => void
+  allDaysSelectable?: boolean    // if true, every day is clickable regardless of entries
 }
 
 function toYMD(date: Date): string {
-  return date.toISOString().slice(0, 10)
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, "0")
+  const d = String(date.getDate()).padStart(2, "0")
+  return `${y}-${m}-${d}`
 }
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
-export default function Calendar({ daysWithEntries, selected, onSelect }: Props) {
+export default function Calendar({ daysWithEntries, selected, onSelect, allDaysSelectable = false }: Props) {
   const today = new Date()
   const [viewYear, setViewYear] = useState(today.getFullYear())
   const [viewMonth, setViewMonth] = useState(today.getMonth()) // 0-indexed
@@ -80,19 +84,20 @@ export default function Calendar({ daysWithEntries, selected, onSelect }: Props)
           const ymd = toYMD(date)
           const isCurrentMonth = date.getMonth() === viewMonth
           const hasEntries = daysWithEntries.has(ymd)
+          const isClickable = allDaysSelectable ? isCurrentMonth : hasEntries
           const isSelected = selected === ymd
           const isToday = toYMD(today) === ymd
 
           return (
             <button
               key={ymd}
-              disabled={!hasEntries}
+              disabled={!isClickable}
               onClick={() => onSelect(isSelected ? null : ymd)}
               className={`
                 flex items-center justify-center rounded-full text-[11px] transition-colors mx-auto w-6 h-6
                 ${!isCurrentMonth ? "text-zinc-300" : ""}
-                ${isCurrentMonth && !hasEntries ? "text-zinc-400 cursor-default" : ""}
-                ${hasEntries && !isSelected ? "text-zinc-900 font-semibold hover:bg-zinc-100 cursor-pointer" : ""}
+                ${isCurrentMonth && !isClickable ? "text-zinc-400 cursor-default" : ""}
+                ${isClickable && !isSelected ? "text-zinc-900 font-semibold hover:bg-zinc-100 cursor-pointer" : ""}
                 ${isSelected ? "bg-zinc-900 text-white font-semibold" : ""}
                 ${isToday && !isSelected ? "ring-1 ring-zinc-300" : ""}
               `}
