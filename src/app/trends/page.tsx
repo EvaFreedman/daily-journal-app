@@ -127,7 +127,7 @@ export default function Trends() {
             <XAxis dataKey="score" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
             <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "#a1a1aa" }} width={24} />
             <Tooltip content={<DistributionTooltip />} />
-            <Bar dataKey="count" radius={[4, 4, 0, 0]} cursor="pointer" onClick={(data) => router.push(`/archive?exactScore=${(data as { score: number }).score}`)}>
+            <Bar dataKey="count" radius={[4, 4, 0, 0]} cursor="pointer" onClick={(data) => router.push(`/archive?exactScore=${(data as unknown as { score: number }).score}`)}>
               {distribution.map((entry) => (
                 <Cell key={entry.score} fill={entry.count > 0 ? "#18181b" : "#e4e4e7"} />
               ))}
@@ -146,7 +146,7 @@ export default function Trends() {
               <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#a1a1aa" }} />
               <YAxis type="category" dataKey="mood" tick={{ fontSize: 11, fill: "#a1a1aa" }} width={80} />
               <Tooltip content={<MoodTooltip />} />
-              <Bar dataKey="count" fill="#18181b" radius={[0, 4, 4, 0]} cursor="pointer" onClick={(data) => router.push(`/archive?mood=${encodeURIComponent((data as { mood: string }).mood)}`)} />
+              <Bar dataKey="count" fill="#18181b" radius={[0, 4, 4, 0]} cursor="pointer" onClick={(data) => router.push(`/archive?mood=${encodeURIComponent((data as unknown as { mood: string }).mood)}`)} />
             </BarChart>
           </ResponsiveContainer>
         </section>
