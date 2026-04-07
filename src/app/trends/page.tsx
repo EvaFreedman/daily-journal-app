@@ -95,7 +95,7 @@ export default function Trends() {
               stroke="#18181b"
               strokeWidth={2}
               dot={{ r: 4, fill: "#18181b", cursor: "pointer" }}
-              activeDot={{ r: 6, cursor: "pointer", onClick: (_: unknown, payload: { payload: DayPoint }) => router.push(`/archive?date=${payload.payload.day}`) }}
+              activeDot={{ r: 6, cursor: "pointer", onClick: ((_: unknown, payload: { payload: DayPoint }) => router.push(`/archive?date=${payload.payload.day}`)) as never }}
             />
           </LineChart>
         </ResponsiveContainer>
