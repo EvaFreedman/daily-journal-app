@@ -6,7 +6,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   BarChart, Bar, ResponsiveContainer, Cell,
 } from "recharts"
-import { getEntries } from "@/lib/storage"
+import { getEntries, JournalEntry } from "@/lib/storage"
 import { buildScoreByDay, buildDistribution, buildMoodFrequency, formatAxisDate, DayPoint } from "@/lib/trends"
 
 // ── Custom tooltips ───────────────────────────────────────────────────────────
