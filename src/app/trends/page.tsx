@@ -80,7 +80,8 @@ export default function Trends() {
           <LineChart
             data={scoreByDay}
             onMouseMove={(d) => {
-              if (d?.activePayload?.length) setHoveredDay(d.activePayload[0].payload as DayPoint)
+              const data = d as { activePayload?: { payload: DayPoint }[] }
+              if (data?.activePayload?.length) setHoveredDay(data.activePayload[0].payload)
             }}
             onMouseLeave={() => setHoveredDay(null)}
           >
